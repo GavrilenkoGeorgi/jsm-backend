@@ -1,13 +1,35 @@
 import express, { Express, Request, Response } from 'express'
 import dotenv from 'dotenv'
+import axios from 'axios'
 
 dotenv.config()
 
 const app: Express = express()
+app.use(express.json())
 const port = process.env.PORT
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server')
+})
+
+app.post('/sendmail', (req: Request, res: Response) => {
+  res.send('Sending email...')
+})
+
+app.post('/captcha', (req: Request, res: Response) => {
+  const url = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${req.body.token}`
+  const config = {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+    }
+  }
+
+  axios.post(url, {}, config)
+    .then((result) => {
+      res.send(result.data.success)
+    }).catch((err) => {
+      console.error(err) //TODO: proper error handling
+    })
 })
 
 app.listen(port, () => {
