@@ -1,11 +1,13 @@
 import express, { Express, Request, Response } from 'express'
 import dotenv from 'dotenv'
 import axios from 'axios'
+import cors from 'cors'
 
 dotenv.config()
 
 const app: Express = express()
 app.use(express.json())
+app.use(cors({credentials: true, origin: process.env.CORS_ORIGIN}))
 const port = process.env.PORT
 
 app.get('/', (req: Request, res: Response) => {
