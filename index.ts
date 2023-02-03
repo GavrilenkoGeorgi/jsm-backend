@@ -28,7 +28,7 @@ app.post('/captcha', (req: Request, res: Response) => {
 
   axios.post(url, {}, config)
     .then((result) => {
-      res.send(result.data.success)
+      res.send(result.data)
     }).catch((err) => {
       console.error(err) //TODO: proper error handling
     })
